@@ -168,11 +168,12 @@ function dynamicSwapImage(image, src, rjs = 1) {
  * @param  {Element} image  An image in the DOM.
  * @param  {String}  src    The original image source attribute.
  * @param  {String}  hdsrc  The path for a 2x image.
+ * @param  (Number)  cap    The target density cap for this image
  *
  * @return {undefined}
  */
-function manualSwapImage(image: HTMLImageElement, src: string, hdsrc: string): void {
-  if (environment > 1) {
+function manualSwapImage(image: HTMLImageElement, src: string, hdsrc: string, cap = 1): void {
+  if (environment > cap) {
     setSourceIfAvailable(image, hdsrc);
   }
 }
@@ -224,6 +225,7 @@ function retina(images: Array<HTMLImageElement>) {
       const src = isImg ? img.getAttribute('src') : cleanBgImg(img);
       const rjs = img.getAttribute('data-rjs');
       const rjsIsNumber: boolean = !isNaN(parseInt(rjs, 10));
+      const rjsIsArray: boolean = !rjsIsNumber && typeof rjs === 'object';
 
       // do not try to load /null image!
       if (rjs === null) {
@@ -236,6 +238,11 @@ function retina(images: Array<HTMLImageElement>) {
        */
       if (rjsIsNumber) {
         dynamicSwapImage(img, src, rjs);
+      } else if (rjsIsArray) {
+        rjsIsArray.forEach((cap, rjsSrc) => {
+          manualSwapImage(img, src, rjsSrc, cap);
+        });
+        manualSwapImage(img, src, rjs);
       } else {
         manualSwapImage(img, src, rjs);
       }
