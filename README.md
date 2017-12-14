@@ -73,19 +73,25 @@ For example, you might write something like this:
 
 If the user then loads the page in any kind of high-resolution environment, they'll get the following:
 
+#### Manually Specifying multiple High-Res URL
+
+If you have multiple paths for various screen density, you can also pass them in JSON format. 
+
+You need to set the scale as the key and the path as the value, like this:
+
 ```html
 <img
   src="/images/2x/my-image.png"
-  data-rjs="/images/2x/my-image.png" />
+  data-rjs='{"4":"/images/4x/my-image.png", "3": "/images/3x/my-image.png", "2": "/images/2x/my-image.png"}' />
 
 <!-- or -->
 
 <div
-  style="background: url(/images/2x/my-image.png)"
-  data-rjs="/images/2x/my-image.png">
+  style="background: url(/images/my_image.png)"
+  data-rjs='{"4":"/images/4x/my-image.png", "3": "/images/3x/my-image.png", "2": "/images/2x/my-image.png"}'>
 </div>
 ```
-
+  
 #### Media Queries
 
 `retina.js` comes with mixins for SCSS, Sass, Less, and Stylus. These mixins work similarly to the JavaScript version in that they will dynamically serve images for as many high-res environments as you've prepared image variants for. Previously, these mixins were named "at2x" but because they now serve images for multiple environments, they have been renamed "retina".
