@@ -69,8 +69,8 @@
     }
   }
   function manualSwapImage(image, src, hdsrc) {
-    var cap = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
-    if (environment > cap) {
+    var cap = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
+    if (environment > cap - 1) {
       setSourceIfAvailable(image, hdsrc);
     }
   }

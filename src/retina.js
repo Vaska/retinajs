@@ -172,8 +172,8 @@ function dynamicSwapImage(image, src, rjs = 1) {
  *
  * @return {undefined}
  */
-function manualSwapImage(image: HTMLImageElement, src: string, hdsrc: string, cap = 1): void {
-  if (environment > cap) {
+function manualSwapImage(image: HTMLImageElement, src: string, hdsrc: string, cap = 2): void {
+  if (environment > cap - 1) {
     setSourceIfAvailable(image, hdsrc);
   }
 }
