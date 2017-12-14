@@ -251,8 +251,8 @@ function retina(images: Array<HTMLImageElement>) {
       if (rjsIsNumber) {
         dynamicSwapImage(img, src, rjs);
       } else if (rjsIsJSON) {
-        rjs.forEach((cap, rjsSrc) => {
-          manualSwapImage(img, src, rjsSrc, cap);
+        Object.keys(rjs).forEach(cap => {
+          manualSwapImage(img, src, rjs[cap], cap);
         });
         manualSwapImage(img, src, rjs);
       } else {
