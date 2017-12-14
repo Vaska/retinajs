@@ -91,15 +91,25 @@
         var src = isImg ? img.getAttribute('src') : cleanBgImg(img);
         var rjs = img.getAttribute('data-rjs');
         var rjsIsNumber = !isNaN(parseInt(rjs, 10));
-        var rjsIsArray =
-          !rjsIsNumber && (typeof rjs === 'undefined' ? 'undefined' : _typeof(rjs)) === 'object';
+        var rjsIsJSON = false;
+        if (!rjsIsNumber) {
+          try {
+            var rjsJSON = JSON.parse(rjs);
+            if ((typeof rjsJSON === 'undefined' ? 'undefined' : _typeof(rjsJSON)) === 'object') {
+              rjsIsJSON = true;
+              rjs = rjsJSON;
+            }
+          } catch (err) {
+            rjsIsJSON = false;
+          }
+        }
         if (rjs === null) {
           return;
         }
         if (rjsIsNumber) {
           dynamicSwapImage(img, src, rjs);
-        } else if (rjsIsArray) {
-          rjsIsArray.forEach(function(cap, rjsSrc) {
+        } else if (rjsIsJSON) {
+          rjs.forEach(function(cap, rjsSrc) {
             manualSwapImage(img, src, rjsSrc, cap);
           });
           manualSwapImage(img, src, rjs);

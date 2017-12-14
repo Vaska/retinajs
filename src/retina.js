@@ -223,9 +223,21 @@ function retina(images: Array<HTMLImageElement>) {
     if (!img.getAttribute(processedAttr)) {
       const isImg: boolean = img.nodeName.toLowerCase() === 'img';
       const src = isImg ? img.getAttribute('src') : cleanBgImg(img);
-      const rjs = img.getAttribute('data-rjs');
+      let rjs = img.getAttribute('data-rjs');
       const rjsIsNumber: boolean = !isNaN(parseInt(rjs, 10));
-      const rjsIsArray: boolean = !rjsIsNumber && typeof rjs === 'object';
+      let rjsIsJSON: boolean = false;
+
+      if (!rjsIsNumber) {
+        try {
+          const rjsJSON = JSON.parse(rjs);
+          if (typeof rjsJSON === 'object') {
+            rjsIsJSON = true;
+            rjs = rjsJSON;
+          }
+        } catch (err) {
+          rjsIsJSON = false;
+        }
+      }
 
       // do not try to load /null image!
       if (rjs === null) {
@@ -238,8 +250,8 @@ function retina(images: Array<HTMLImageElement>) {
        */
       if (rjsIsNumber) {
         dynamicSwapImage(img, src, rjs);
-      } else if (rjsIsArray) {
-        rjsIsArray.forEach((cap, rjsSrc) => {
+      } else if (rjsIsJSON) {
+        rjs.forEach((cap, rjsSrc) => {
           manualSwapImage(img, src, rjsSrc, cap);
         });
         manualSwapImage(img, src, rjs);
